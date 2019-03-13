@@ -9,7 +9,7 @@ const models = require('../models/loginEvents')
 global.Headers = fetch.Headers
 
 // return all api applications
-router.get('/allApis',
+router.get('/events',
     async function (req, res) {
         const valid = (checkToken(req.token))
         if (valid == true) {
@@ -21,7 +21,10 @@ router.get('/allApis',
                     })
                 })
                 .then(res => res.json())
-                .then(data => console.log(data))
+                .then(data => {
+                    console.log(data.value.length)
+                    res.status(200).send(data)
+                })
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
     }
