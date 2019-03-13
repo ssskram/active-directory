@@ -1,0 +1,22 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "AD Proxy",
+        "description": "Proxy for certain AD endpoints",
+        "version": "1.0.0"
+    },
+    "host": "active-directory.azurewebsites.us",
+    "schemes": [
+        "https"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "paths": {
+
+    }
+}
