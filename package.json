@@ -5,6 +5,7 @@
     "@microsoft/sp-http": "^1.7.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "csvtojson": "^2.0.8",
     "dotenv": "^2.0.0",
     "express": "^4.13.3",
     "express-bearer-token": "^2.2.0",

@@ -11,8 +11,13 @@ const events = {
         userEmail: 'userPrincipalName',
         appName: 'appDisplayName',
         ipAddress: 'ipAddress',
-        status: 'status',
-        location: 'location'
+        location: {
+            city: 'location.city',
+            state: 'location.state',
+            country: 'location.countryOrRegion',
+            latitute: 'location.geoCoordinates.latitude',
+            longitude: 'location.geoCoordinates.longitude'
+        }
     },
     operate: [{
         'run': dateTransform,
