@@ -1,14 +1,25 @@
+const moment = require('moment')
+const tz = require('moment-timezone')
 
-const event = {
+const dateTransform = (date) => moment(date).tz('America/New_York').format('MM-DD-YYYY, hh:mm A')
+
+const events = {
     list: 'value',
     item: {
-        name: 'name',
-        status: 'properties.state',
-        url: 'properties.defaultHostName',
-        resourceGroup: 'properties.resourceGroup'
-    }
+        time: 'createdDateTime',
+        userName: 'userDisplayName',
+        userEmail: 'userPrincipalName',
+        appName: 'appDisplayName',
+        ipAddress: 'ipAddress',
+        status: 'status',
+        location: 'location'
+    },
+    operate: [{
+        'run': dateTransform,
+        'on': "time"
+    }]
 }
 
 module.exports = {
-    event
+    events
 }

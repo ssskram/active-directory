@@ -22,8 +22,7 @@ router.get('/events',
                 })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data.value.length)
-                    res.status(200).send(data)
+                    res.status(200).send(dt(data, models.events).transform())
                 })
                 .catch(err => res.status(500).send(err))
         } else res.status(403).end()
