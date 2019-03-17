@@ -10,13 +10,15 @@ global.Headers = fetch.Headers
 router.get('/events',
     async function (req, res) {
         let events = []
+        let page = 0
         const valid = (checkToken(req.token))
+
         if (valid == true) {
             await callApi("https://graph.microsoft.com/beta/auditLogs/signIns?&$filter=status/errorCode eq 0")
-            res.status(200).send(dt(events, models.events).transform())
+            res.status(200).send(events)
         } else res.status(403).end()
-        
-        async function callApi (url) {
+
+        async function callApi(url) {
             const response = await fetch(url, {
                 method: 'get',
                 headers: new Headers({
@@ -26,8 +28,8 @@ router.get('/events',
             })
             const data = await response.json()
             await events.push(...dt(data, models.events).transform())
-            if (data["@odata.nextLink"] && events < 10000) {
-                console.log(data["@odata.nextLink"])
+            page = page + 1
+            if (data["@odata.nextLink"] && page <= 10) {
                 await callApi(data["@odata.nextLink"])
             } else return
         }
