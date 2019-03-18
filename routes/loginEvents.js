@@ -10,11 +10,10 @@ global.Headers = fetch.Headers
 router.get('/events',
     async function (req, res) {
         let events = []
-        let page = 0
         const valid = (checkToken(req.token))
-
         if (valid == true) {
-            await callApi("https://graph.microsoft.com/beta/auditLogs/signIns?&$filter=status/errorCode eq 0")
+            const time = await getSpan(req.query.prevMinutes)
+            await callApi("https://graph.microsoft.com/beta/auditLogs/signIns?(status/errorCode eq 0) and &$filter=createdDateTime ge " + time.from + "")
             res.status(200).send(events)
         } else res.status(403).end()
 
@@ -28,12 +27,22 @@ router.get('/events',
             })
             const data = await response.json()
             await events.push(...dt(data, models.events).transform())
-            page = page + 1
-            if (data["@odata.nextLink"] && page <= 10) {
+            if (data["@odata.nextLink"]) {
                 await callApi(data["@odata.nextLink"])
             } else return
         }
     }
 )
+
+const getSpan = span => {
+    const from = new Date()
+    // pulling an extra five minutes back...
+    // typically there is a ~2-4 min lag before events
+    // appear in feed
+    from.setMinutes(from.getMinutes() - span - 5)
+    return {
+        from: from.toISOString(),
+    }
+}
 
 module.exports = router
