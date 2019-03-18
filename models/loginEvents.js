@@ -2,6 +2,7 @@
 const events = {
     list: 'value',
     item: {
+        id: 'id',
         time: 'createdDateTime',
         userName: 'userDisplayName',
         userEmail: 'userPrincipalName',
