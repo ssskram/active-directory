@@ -11,7 +11,7 @@ const events = {
         city: 'location.city',
         state: 'location.state',
         country: 'location.countryOrRegion',
-        latitute: 'location.geoCoordinates.latitude',
+        latitude: 'location.geoCoordinates.latitude',
         longitude: 'location.geoCoordinates.longitude'
     }
 }
