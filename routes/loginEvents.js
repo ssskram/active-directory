@@ -13,7 +13,7 @@ router.get('/events',
         const valid = (checkToken(req.token))
         if (valid == true) {
             const time = await getSpan(req.query.prevMinutes)
-            await callApi("https://graph.microsoft.com/beta/auditLogs/signIns?(status/errorCode eq 0) and &$filter=createdDateTime ge " + time.from + "")
+            await callApi("https://graph.microsoft.com/beta/auditLogs/signIns?$filter=(status/errorCode eq 0) and createdDateTime ge " + time.from + "")
             res.status(200).send(events)
         } else res.status(403).end()
 
@@ -31,6 +31,24 @@ router.get('/events',
                 await callApi(data["@odata.nextLink"])
             } else return
         }
+    }
+)
+
+router.get('/singleEvent',
+    async function (req, res) {
+        const valid = (checkToken(req.token))
+        if (valid == true) {
+            fetch("https://graph.microsoft.com/beta/auditLogs/signIns/" + req.query.id, {
+                method: 'get',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + await refreshToken(),
+                    'Accept': 'application/json'
+                })
+            })
+                .then(res => res.json())
+                .then(data => res.status(200).send(data))
+                .catch(err => res.status(500).send(err))
+        } else res.status(403).end()
     }
 )
 
