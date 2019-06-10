@@ -1,6 +1,6 @@
 # AD Proxy
 
-This repo contains a node application that serves as a proxy service between all City of Pittsburgh client applications that interface with the Active Directory endpoint exposed through the Microsoft Graph API.
+This repo contains a node application that serves as a proxy service between all City of Pittsburgh client applications that interface with Active Directory via the Microsoft Graph API.
 
 ## Authorization
 
