@@ -1,22 +1,142 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "AD Proxy",
-        "description": "Proxy for certain AD endpoints",
-        "version": "1.0.0"
-    },
-    "host": "active-directory.azurewebsites.us",
-    "schemes": [
-        "https"
-    ],
-    "securityDefinitions": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        }
-    },
-    "paths": {
-
+  "swagger": "2.0",
+  "info": {
+    "title": "AD Proxy",
+    "description": "Proxy for certain AD endpoints",
+    "version": "1.0.0"
+  },
+  "host": "active-directory.azurewebsites.us",
+  "schemes": ["https"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
+  },
+  "paths": {
+    "/loginEvents/events": {
+      "get": {
+        "tags": ["Login Events"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Login events during specific time span",
+        "description": "Returns successful logins for x previous minutes",
+        "parameters": [
+          {
+            "name": "prevMinutes",
+            "in": "query",
+            "description": "Minutes to call back from",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of login events",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "time": {
+                    "type": "string"
+                  },
+                  "userName": {
+                    "type": "string"
+                  },
+                  "userEmail": {
+                    "type": "string"
+                  },
+                  "appName": {
+                    "type": "string"
+                  },
+                  "ipAddress": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "latitude": {
+                    "type": "float"
+                  },
+                  "longitude": {
+                    "type": "float"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/loginEvents/singleEvent": {
+      "get": {
+        "tags": ["Login Events"],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Single login event",
+        "description": "Returns singler record by id in query",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Event ID",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single event object",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "403": {
+            "description": "Access Denied"
+          },
+          "500": {
+            "description": "Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
